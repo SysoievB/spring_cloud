@@ -1,4 +1,4 @@
-package com.users;
+package com.users.controller;
 
 public record CreateUserResponse(
         String firstName,
