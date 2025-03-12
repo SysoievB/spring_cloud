@@ -16,20 +16,12 @@ import lombok.experimental.FieldDefaults;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String street;
     int number;
     String city;
     String state;
-
-    public Address(String street, int number, String city, String state) {
-        this.street = street;
-        this.number = number;
-        this.city = city;
-        this.state = state;
-    }
 
     public Address update(String street, Integer number, String city, String state) {
         if (street != null && !street.isBlank()) {

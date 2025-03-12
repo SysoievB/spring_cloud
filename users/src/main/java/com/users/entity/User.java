@@ -41,12 +41,25 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = false, unique = true)
     String encryptedPassword;
 
+    @Setter
+    @Column(unique = true) // Address ID from the Address microservice
+    Long addressId;
+
     public User(String firstName, String lastName, String email, String userId, String encryptedPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userId = userId;
         this.encryptedPassword = encryptedPassword;
+    }
+
+    public User(String firstName, String lastName, String email, String userId, String encryptedPassword, Long addressId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.userId = userId;
+        this.encryptedPassword = encryptedPassword;
+        this.addressId = addressId;
     }
 
     @Override

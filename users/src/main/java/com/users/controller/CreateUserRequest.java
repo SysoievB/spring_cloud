@@ -19,5 +19,8 @@ public record CreateUserRequest(
 
         @NotNull(message = "Email cannot be null")
         @Email
-        String email) {
+        String email,
+
+        @NotNull
+        Long addressId) {
 }
