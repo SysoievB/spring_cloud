@@ -6,3 +6,6 @@ COPY target/account-0.0.1-SNAPSHOT.jar account-0.0.1-SNAPSHOT.jar
 
 # execute the application
 ENTRYPOINT ["java", "-jar", "account-0.0.1-SNAPSHOT.jar"]
+
+# Expose the application port
+EXPOSE 8030

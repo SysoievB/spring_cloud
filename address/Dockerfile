@@ -6,3 +6,6 @@ COPY target/address-0.0.1-SNAPSHOT.jar address-0.0.1-SNAPSHOT.jar
 
 # execute the application
 ENTRYPOINT ["java", "-jar", "address-0.0.1-SNAPSHOT.jar"]
+
+# Expose the application port
+EXPOSE 8040

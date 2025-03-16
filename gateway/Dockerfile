@@ -6,3 +6,6 @@ COPY target/gateway-0.0.1-SNAPSHOT.jar gateway-0.0.1-SNAPSHOT.jar
 
 # execute the application
 ENTRYPOINT ["java", "-jar", "gateway-0.0.1-SNAPSHOT.jar"]
+
+# Expose the application port
+EXPOSE 8082
