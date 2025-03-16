@@ -1,0 +1,107 @@
+services:
+  config_server:
+    image: config_server:latest
+    container_name: config_server
+    build:
+      context: ./config_server
+      dockerfile: Dockerfile
+    ports:
+      - "8012:8012"
+    networks:
+      - backend
+
+  eureka:
+    image: eureka:latest
+    container_name: eureka
+    build:
+      context: ./eureka
+      dockerfile: Dockerfile
+    ports:
+      - "8010:8010"
+    environment:
+      SPRING_CLOUD_CONFIG_URI: http://config_server:8012
+    depends_on:
+      - config_server
+    networks:
+      - backend
+
+  gateway:
+    image: gateway:latest
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_CLOUD_CONFIG_URI: http://config_server:8012
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+    depends_on:
+      - eureka
+      - config_server
+    networks:
+      - backend
+
+  account:
+    image: account:latest
+    container_name: account
+    build:
+      context: ./account
+      dockerfile: Dockerfile
+    ports:
+      - "8030:8030"
+    depends_on:
+      - eureka
+      - config_server
+      - gateway
+    environment:
+      SPRING_APPLICATION_NAME: account
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CLOUD_CONFIG_URI: http://config_server:8012
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+    networks:
+      - backend
+
+  address:
+    image: address:latest
+    container_name: address
+    build:
+      context: ./address
+      dockerfile: Dockerfile
+    ports:
+      - "8040:8040"
+    depends_on:
+      - eureka
+      - config_server
+      - gateway
+    environment:
+      SPRING_APPLICATION_NAME: address
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CLOUD_CONFIG_URI: http://config_server:8012
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+    networks:
+      - backend
+
+  users:
+    image: users:latest
+    container_name: users
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    ports:
+      - "8020:8020"
+    depends_on:
+      - eureka
+      - config_server
+      - gateway
+    environment:
+      SPRING_APPLICATION_NAME: users
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CLOUD_CONFIG_URI: http://config_server:8012
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
