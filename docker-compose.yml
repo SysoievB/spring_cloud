@@ -9,6 +9,12 @@ services:
       - "8012:8012"
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8012/actuator/health"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
 
   eureka:
     image: eureka:latest
@@ -24,6 +30,12 @@ services:
       - config_server
     networks:
       - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8010/"]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 30s
 
   gateway:
     image: gateway:latest
@@ -35,7 +47,7 @@ services:
       - "8082:8082"
     environment:
       SPRING_CLOUD_CONFIG_URI: http://config_server:8012
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8010/eureka/
     depends_on:
       - eureka
       - config_server
@@ -58,7 +70,7 @@ services:
       SPRING_APPLICATION_NAME: account
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CLOUD_CONFIG_URI: http://config_server:8012
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8010/eureka/
     networks:
       - backend
 
@@ -78,7 +90,7 @@ services:
       SPRING_APPLICATION_NAME: address
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CLOUD_CONFIG_URI: http://config_server:8012
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8010/eureka/
     networks:
       - backend
 
@@ -98,7 +110,7 @@ services:
       SPRING_APPLICATION_NAME: users
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CLOUD_CONFIG_URI: http://config_server:8012
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://root:pass@eureka:8010/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8010/eureka/
     networks:
       - backend
 
